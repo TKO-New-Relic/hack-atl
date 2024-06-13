@@ -1,0 +1,30 @@
+[
+  {
+    "Id": "ALPH-CAM-002--1",
+    "Organization": "TestAgency",
+    "RoadwayName": "SR 9",
+    "DirectionOfTravel": "Westbound",
+    "Latitude": 34.075607,
+    "Longitude": -84.29459,
+    "Name": "SR 9 at Academy St  Milton Ave",
+    "Url": "http://www.511ga.org/map/Cctv/ALPH-CAM-002--1",
+    "VideoUrl": "https://vss1live.dot.ga.gov/lo/alph-cam-002.stream/playlist.m3u8",
+    "Status": "Enabled",
+    "Description": "",
+    "SortId": 0
+  },
+  {
+    "Id": "ALPH-CAM-003--1",
+    "Organization": "TestAgency",
+    "RoadwayName": "Milton Ave",
+    "DirectionOfTravel": "Unknown",
+    "Latitude": 34.075733,
+    "Longitude": -84.29657,
+    "Name": "Milton Ave at Canton St Roswell St",
+    "Url": "http://www.511ga.org/map/Cctv/ALPH-CAM-003--1",
+    "VideoUrl": "https://vss1live.dot.ga.gov/lo/alph-cam-003.stream/playlist.m3u8",
+    "Status": "Enabled",
+    "Description": "",
+    "SortId": 1
+  }
+]
