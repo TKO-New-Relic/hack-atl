@@ -1,6 +1,8 @@
 import Hls from "hls.js"
 import { useEffect, useRef, useState } from "react"
 
+const SUPER_SECRET_KEY = "cf27382c4e2ff6ccedd5bc80f585618bee074a7b";
+
 interface VideoPlayerProps {
   src: string
 }
@@ -34,8 +36,22 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = (props) => {
           //Update state
           updateImgSrc(jpegSrc);
 
+          let body = new FormData();
+          body.append("upload", jpegSrc);
+          body.append("regions", "us-ca");
+          body.append("mmc", "true");
 
-        }, 1000)
+
+          fetch("https://api.platerecognizer.com/v1/plate-reader/", {
+            method: "POST",
+            headers: {
+              Authorization: "Token " + SUPER_SECRET_KEY
+            },
+            body: body
+          })
+            .then(res => res.json())
+            .then(json => console.log(json))
+        }, 1500) 
 
         return () => clearInterval(intervalId)
       })
@@ -44,7 +60,6 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = (props) => {
         'This is an old browser that does not support MSE https://developer.mozilla.org/en-US/docs/Web/API/Media_Source_Extensions_API'
       );
     }
-
   }, [src, videoRef]);
 
   const takeASnapshot: () => string = () => {
