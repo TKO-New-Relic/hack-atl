@@ -54,6 +54,9 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = (props) => {
 
     ctx?.drawImage(camPlayer, 0, 0, canvas.width, canvas.height);
 
+    //ACCESS TO JPEG IMAGE
+    const jpeg = canvas.toDataURL();
+
     const prevImg = document.getElementById("snapshot");
     prevImg?.remove();
 
