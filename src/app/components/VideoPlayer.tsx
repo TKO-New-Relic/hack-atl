@@ -1,6 +1,4 @@
 import Hls from "hls.js"
-import html2canvas from "html2canvas";
-import Plyr from "plyr";
 import { useEffect, useRef, useState } from "react"
 
 interface VideoPlayerProps {
@@ -10,6 +8,7 @@ interface VideoPlayerProps {
 export const VideoPlayer: React.FC<VideoPlayerProps> = (props) => {
   const { src } = props
   const videoRef = useRef<HTMLVideoElement>(null)
+  //Jpeg snapshot source
   const [imageSrc, updateImgSrc] = useState("");
 
   useEffect(() => {
@@ -29,9 +28,13 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = (props) => {
       hls.attachMedia(video);
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
         video.play();
-        //Snapshots every half sec
+        //Snapshots every second
         const intervalId = setInterval(() => {
-          takeASnapshot();
+          let jpegSrc = takeASnapshot();
+          //Update state
+          updateImgSrc(jpegSrc);
+
+
         }, 1000)
 
         return () => clearInterval(intervalId)
@@ -44,8 +47,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = (props) => {
 
   }, [src, videoRef]);
 
-
-  const takeASnapshot = () => {
+  const takeASnapshot: () => string = () => {
     const camPlayer = document.getElementById("cam-stream");
     const canvas = document.createElement('canvas');
 
@@ -58,8 +60,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = (props) => {
     //ACCESS TO JPEG IMAGE
     const jpeg = canvas.toDataURL();
 
-    updateImgSrc(jpeg);
-
+    return jpeg;
   }
 
   return (
