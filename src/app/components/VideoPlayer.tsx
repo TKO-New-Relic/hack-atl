@@ -1,7 +1,7 @@
 import Hls from "hls.js"
 import html2canvas from "html2canvas";
 import Plyr from "plyr";
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 
 interface VideoPlayerProps {
   src: string
@@ -10,6 +10,7 @@ interface VideoPlayerProps {
 export const VideoPlayer: React.FC<VideoPlayerProps> = (props) => {
   const { src } = props
   const videoRef = useRef<HTMLVideoElement>(null)
+  const [imageSrc, updateImgSrc] = useState("");
 
   useEffect(() => {
     const video = videoRef.current;
@@ -57,13 +58,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = (props) => {
     //ACCESS TO JPEG IMAGE
     const jpeg = canvas.toDataURL();
 
-    const prevImg = document.getElementById("snapshot");
-    prevImg?.remove();
-
-    const img = new Image();
-    img.id = "snapshot"
-    img.src = canvas.toDataURL();
-    document.body.appendChild(img);
+    updateImgSrc(jpeg);
 
   }
 
@@ -75,6 +70,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = (props) => {
           max-width: 100%;
         }
       `}</style>
+      <img src={imageSrc} alt="screenshot" id="snapshot" />
     </div>
   );
 }
