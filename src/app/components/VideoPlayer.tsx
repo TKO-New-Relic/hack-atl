@@ -26,9 +26,14 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = (props) => {
       const hls = new Hls();
       hls.loadSource(src);
       hls.attachMedia(video);
-      hls.on(Hls.Events.MEDIA_ATTACHED, () => {
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
         video.play();
-        let snap = takeASnapshot();
+        //Snapshots every half sec
+        const intervalId = setInterval(() => {
+          takeASnapshot();
+        }, 1000)
+
+        return () => clearInterval(intervalId)
       })
     } else {
       console.error(
@@ -40,20 +45,28 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = (props) => {
 
 
   const takeASnapshot = () => {
+    const camPlayer = document.getElementById("cam-stream");
     const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d')
-    if (!videoRef.current) return null;
-    html2canvas(videoRef.current).then(canvas => {
-      const img = new Image();
-      img.src = canvas.toDataURL();
-      document.body.appendChild(img);
-    });
-  }
 
+    canvas.width = camPlayer?.clientWidth;
+    canvas.height = camPlayer?.clientHeight;
+    const ctx = canvas.getContext('2d')
+
+    ctx?.drawImage(camPlayer, 0, 0, canvas.width, canvas.height);
+
+    const prevImg = document.getElementById("snapshot");
+    prevImg?.remove();
+
+    const img = new Image();
+    img.id = "snapshot"
+    img.src = canvas.toDataURL();
+    document.body.appendChild(img);
+
+  }
 
   return (
     <div>
-      <video data-displaymaxtap ref={videoRef} />
+      <video data-displaymaxtap id="cam-stream" ref={videoRef} />
       <style jsx>{`
         video {
           max-width: 100%;
